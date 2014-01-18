@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="C:/Users/Toby/Documents/GitHub/MERCury/MERCury/libs/kryonet-2.21-all.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Toby/Documents/GitHub/MERCury/MERCury/libs/lwjgl/jar/lwjgl.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="MERCury Git/libs/lwjgl/native/universal"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Toby/Documents/GitHub/MERCury/MERCury/target/MERCury.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Toby/Documents/GitHub/MERCury/MERCury/target/MERCury_KryoNetworkingPlugin.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
