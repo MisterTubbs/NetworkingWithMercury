@@ -5,7 +5,6 @@ import java.util.Map;
 import com.esotericsoftware.kryonet.Connection;
 import com.teamA.netTest.entity.Player;
 import com.teamA.netTest.net.packet.PacketDisconnect;
-import com.teamA.netTest.net.packet.PacketFillRequest;
 import com.teamA.netTest.net.packet.PacketLogin;
 import com.teamA.netTest.net.packet.PacketMove;
 import com.wessles.MERCury.net.MercClient;
@@ -33,8 +32,6 @@ public class NetworkListener extends Network {
 
 	@Override
 	public void connected(Connection connection) {
-		PacketFillRequest packet = new PacketFillRequest();
-		client.sendTCP(packet);
 	}
 
 	@Override
@@ -44,15 +41,12 @@ public class NetworkListener extends Network {
 	@Override
 	public void received(Connection connection, Object object) {
 		if (object instanceof PacketLogin) {
-			System.out.println("Login packet received");
-			players.put(((PacketLogin) object).id, new Player(
-					((PacketLogin) object).x, ((PacketLogin) object).y));
+			players.put(((PacketLogin) object).id, new Player(((PacketLogin) object).x, ((PacketLogin) object).y));
 		} else if (object instanceof PacketDisconnect) {
 			players.remove(((PacketDisconnect) object).id);
 		} else if (object instanceof PacketMove) {
 			if (((PacketMove) object).id != client.getID()) {
-				players.get(((PacketMove) object).id).move(
-						((PacketMove) object).x, ((PacketMove) object).y);
+				players.get(((PacketMove) object).id).move(((PacketMove) object).x, ((PacketMove) object).y);
 			}
 		}
 	}

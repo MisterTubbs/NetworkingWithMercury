@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.lwjgl.input.Keyboard;
+
 import com.teamA.netTest.entity.Player;
 import com.teamA.netTest.net.NetworkListener;
 import com.teamA.netTest.net.packet.PacketDisconnect;
@@ -71,6 +73,10 @@ public class Client extends Core{
 		packet.x = player.getX();
 		packet.y = player.getY();
 		client.sendTCP(packet);
+		
+		PacketFillRequest packetRequest = new PacketFillRequest();
+		packetRequest.id = client.getID();
+		client.sendTCP(packetRequest);
 	}
 
 	@Override
@@ -80,16 +86,24 @@ public class Client extends Core{
 		}
 		player.render(g);
 		g.drawString(1, 20, "Number of players connected: " + players.size());
+		g.drawString(1, 40, "Client ID " + client.getID());
 	}
 
 	@Override
 	public void update(float delta) {
 		in = rnr.input();
 		player.update(client, in);
+		if(in.keyDown(Keyboard.KEY_ESCAPE)){
+			PacketDisconnect packet = new PacketDisconnect();
+			packet.id = client.getID();
+			client.sendTCP(packet);
+			rnr.end();
+		}
 	}
 	
 	@Override
 	public void cleanup(ResourceManager rm) {
+		client.close();
 	}
 
 	@SuppressWarnings("resource")

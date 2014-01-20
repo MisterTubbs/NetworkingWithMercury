@@ -42,13 +42,11 @@ public class NetworkListener extends Network {
 	@Override
 	public void received(Connection connection, Object object) {
 		if (object instanceof PacketLogin) {
-			PacketLogin packet = new PacketLogin();
-			packet.id = ((PacketLogin) object).id;
-			packet.x = ((PacketLogin) object).x;
-			packet.y = ((PacketLogin) object).y;
-			clients.put(packet.id, new Vector2f(packet.x, packet.y));
-			server.sendTCPExcept(packet.id, packet);
+			System.out.println("Packet Login detected");
+			clients.put(((PacketLogin) object).id, new Vector2f(((PacketLogin) object).x, ((PacketLogin) object).y));
+			server.sendTCPExcept(((PacketLogin) object).id, object);
 		} else if (object instanceof PacketFillRequest) {
+			System.out.println("Packet Fill Request detected");
 			for (Map.Entry<Integer, Vector2f> entry : clients.entrySet()) {
 				if (((PacketFillRequest) object).id != entry.getKey()) {
 					PacketLogin packet = new PacketLogin();
@@ -56,19 +54,18 @@ public class NetworkListener extends Network {
 					packet.x = (int) clients.get(entry.getKey()).x;
 					packet.y = (int) clients.get(entry.getKey()).y;
 					server.sendTCP(((PacketFillRequest) object).id, packet);
+					System.out.println("Sent Packet Fill Request Response");
 				}
 			}
 		} else if (object instanceof PacketDisconnect) {
-			PacketDisconnect packet = new PacketDisconnect();
-			packet.id = ((PacketDisconnect) object).id;
-			server.sendTCPExcept(packet.id, packet);
+			System.out.println("Packet Disconnect detected");
+			server.sendTCPExcept(((PacketDisconnect) object).id, object);
 			clients.remove(((PacketDisconnect) object).id);
 		} else if (object instanceof PacketMove) {
-			PacketMove packet = new PacketMove();
-			packet.id = ((PacketMove) object).id;
-			packet.x = ((PacketMove) object).x;
-			packet.y = ((PacketMove) object).y;
-			server.sendTCPExcept(((PacketMove) object).id, packet);
+			clients.get(((PacketMove) object).id).x = ((PacketMove) object).x + clients.get(((PacketMove) object).id).x;
+			clients.get(((PacketMove) object).id).y = ((PacketMove) object).y + clients.get(((PacketMove) object).id).y;
+			//System.out.println("Packet Move detected");
+			server.sendTCPExcept(((PacketMove) object).id, object);
 		}
 	}
 }
